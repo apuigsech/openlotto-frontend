@@ -1,16 +1,14 @@
 import type { Chain } from 'viem'
-import { mainnet, arbitrum, arbitrumGoerli, optimism } from 'viem/chains'
+import { mainnet, sepolia } from 'viem/chains'
 
-export type AppNetwork = 'mainnet' | 'arbitrum' | 'optimism' | 'arbitrum-goerli'
+export type AppNetwork = 'mainnet' | 'sepolia'
 
 export const networkMap = new Map<AppNetwork, Chain>()
 
 networkMap.set('mainnet', mainnet)
-networkMap.set('arbitrum', arbitrum)
-networkMap.set('optimism', optimism)
-networkMap.set('arbitrum-goerli', arbitrumGoerli)
+networkMap.set('sepolia', sepolia)
 
-export const APP_NAME = 'Vue Dapp'
+export const APP_NAME = 'OpenLotto'
 
 export const MULTICALL3_ADDRESS = '0xcA11bde05977b3631167028862bE2a173976CA11'
 
