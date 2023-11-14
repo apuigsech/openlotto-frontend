@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { shortenAddress, useWalletStore } from '@vue-dapp/core'
 import copy from 'copy-to-clipboard'
 import { useDappStore } from '@/stores/useDappStore'
 import { useBoardStore } from '@vue-dapp/vd-board'
+import { shortenAddress, useWalletStore } from '@vue-dapp/core'
 
 const { open } = useBoardStore()
 
 const { disconnect } = useWalletStore()
-const { connector, status, address, isConnected } = storeToRefs(useWalletStore())
+const { connector, status, isConnected } = storeToRefs(useWalletStore())
 
 const dappStore = useDappStore()
-const { isNetworkUnmatched } = storeToRefs(dappStore)
+const { isNetworkUnmatched, user } = storeToRefs(dappStore)
 
 async function onSwitchChain() {
 	try {
@@ -39,13 +39,13 @@ async function onSwitchChain() {
 					@click="onSwitchChain"
 				/>
 
-				<p v-else>{{ shortenAddress(address) }}</p>
+				<p v-else>{{ shortenAddress(user.address) }}</p>
 
 				<Icon
 					name="i-ic-baseline-content-copy"
 					v-if="!isNetworkUnmatched"
 					class="clickable"
-					@click="copy(address)"
+					@click="copy(user.address)"
 				/>
 
 				<Icon name="i-ic:baseline-logout" class="clickable" @click="disconnect" />
