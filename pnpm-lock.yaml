@@ -2019,19 +2019,9 @@ packages:
       pinia: ^2.1.7
       vue: ^3.3.6
     dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-      '@vue-dapp/core': 1.0.0-alpha.2(pinia@2.1.7)(vue@3.3.6)
+      '@vue-dapp/core': 1.0.0-alpha.5(pinia@2.1.7)(vue@3.3.6)
       pinia: 2.1.7(typescript@5.2.2)(vue@3.3.6)
       vue: 3.3.6(typescript@5.2.2)
-=======
-      '@vue-dapp/core': 1.0.0-alpha.3(pinia@2.1.7)(vue@3.3.6)
-=======
-      '@vue-dapp/core': 1.0.0-alpha.5(pinia@2.1.7)(vue@3.3.6)
->>>>>>> 2a562a7 (feat: upgrade to @vue-dapp/core@1.0.0-alpha.5)
-      pinia: 2.1.7(vue@3.3.6)
-      vue: 3.3.6
->>>>>>> 01919d1 (chore: upgrade @vue-dapp/core and @vue-dapp/vd-board)
     dev: false
 
   /@vue-dapp/walletconnect@1.0.0-alpha.2(@vue-dapp/core@1.0.0-alpha.5)(react@18.2.0):
