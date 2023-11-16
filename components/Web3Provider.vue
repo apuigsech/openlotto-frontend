@@ -5,12 +5,15 @@ import { ethers } from 'ethers'
 
 import { MetaMaskConnector, useWalletStore } from '@vue-dapp/core'
 import { Board } from '@vue-dapp/vd-board'
+import '@vue-dapp/vd-board/dist/style.css'
+
 import { WalletConnectConnector } from '@vue-dapp/walletconnect'
 
 const dappStore = useDappStore()
 const { isConnected, user } = storeToRefs(dappStore)
 
-const { onActivated, onChanged, onDeactivated } = useWalletStore()
+const pinia = usePinia()
+const { onActivated, onChanged, onDeactivated } = useWalletStore(pinia)
 
 onActivated(async ({ address, provider, chainId }) => {
 	const ethersProvider = new ethers.BrowserProvider(provider)

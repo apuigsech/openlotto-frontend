@@ -5,10 +5,11 @@ import { useDappStore } from '@/stores/useDappStore'
 import { useBoardStore } from '@vue-dapp/vd-board'
 import { shortenAddress, useWalletStore } from '@vue-dapp/core'
 
-const { open } = useBoardStore()
-
-const { disconnect } = useWalletStore()
-const { connector, status, isConnected } = storeToRefs(useWalletStore())
+const pinia = usePinia()
+const { open } = useBoardStore(pinia)
+const walletStore = useWalletStore(pinia)
+const { disconnect } = walletStore
+const { connector, status, isConnected } = storeToRefs(walletStore)
 
 const dappStore = useDappStore()
 const { isNetworkUnmatched, user } = storeToRefs(dappStore)
