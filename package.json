@@ -24,7 +24,7 @@
 		"tiny-invariant": "^1.3.1",
 		"viem": "^1.16.5",
 		"vue3-select": "^0.1.2",
-		"@apuigsech/openlotto-bindings": "^0.1.0-alpha-3"
+		"@apuigsech/openlotto-bindings": "^0.1.0-alpha-4"
 	},
 	"devDependencies": {
 		"@nuxt/devtools": "latest",
