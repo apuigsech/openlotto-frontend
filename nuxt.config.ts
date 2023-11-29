@@ -1,6 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
 	devtools: { enabled: true },
+	target: 'static',
 	components: [
 		{
 			path: '~/components',
@@ -27,7 +29,10 @@ export default defineNuxtConfig({
 		configPath: 'tailwind.config',
 		injectPosition: 'last', // https://tailwindcss.nuxtjs.org/getting-started/options#injectposition
 	},
-	css: ['~/styles/main.scss'],
+	css: [
+		'~/styles/main.scss',
+		'vuetify/lib/styles/main.sass'
+	],
 	runtimeConfig: {
 		public: {
 			apiBase: '',
@@ -55,6 +60,14 @@ export default defineNuxtConfig({
 					content: '',
 				},
 			],
+		},
+	},
+	build: {
+		transpile: ['vuetify'],
+	},
+	vite: {
+		define: {
+		  'process.env.DEBUG': false,
 		},
 	},
 })
