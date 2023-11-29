@@ -2,7 +2,6 @@
 
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	target: 'static',
 	components: [
 		{
 			path: '~/components',
@@ -61,10 +60,16 @@ export default defineNuxtConfig({
 				},
 			],
 		},
+		baseURL: "/openlotto-frontend/",
 	},
 	build: {
 		transpile: ['vuetify'],
 	},
+	generate:{
+		nojekyll: true, //not working on this version
+		fallback: '404.html',
+	},
+	target: "static",
 	vite: {
 		define: {
 		  'process.env.DEBUG': false,
