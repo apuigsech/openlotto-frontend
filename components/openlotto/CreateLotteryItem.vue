@@ -3,38 +3,38 @@
         <v-text-field 
             variant="underlined"
             label="Name"
-            v-model=lotteryRef.Name
+            v-model=lottery.Name
         ></v-text-field>
 
         <v-slider
             label="Init Block"
-            v-model=lotteryRef.InitBlock
-            :min="blockNumber" :max="blockNumber + 10000" step=1
+            v-model=lottery.InitBlock
+            :min=blockNumber :max="blockNumber + 10000" step=1
             thumb-label
         ></v-slider>
 
         <v-slider
             label="Rounds"
-            v-model=lotteryRef.Rounds
+            v-model=lottery.Rounds
             min=1 max=1000 step=1
             thumb-label
         ></v-slider>
 
         <v-slider
             label="Round Blocks"
-            v-model=lotteryRef.RoundBlocks
+            v-model=lottery.RoundBlocks
             min=1 max=1000 step=1
             thumb-label
         ></v-slider>
 
         <v-slider
             label="Bet Price"
-            v-model=lotteryRef.BetPrice
+            v-model=lottery.BetPrice
             min=0 max=1000000000000000000 step=100000000000000
             thumb-label
         >
             <template v-slot:thumb-label="">
-                {{ Number(lotteryRef.BetPrice) / 10000000000000000 }}
+                {{ Number(lottery.BetPrice) / 10000000000000000 }}
             </template>
         </v-slider>
 
@@ -43,7 +43,7 @@
             :items=Operators
             item-title="name"
             item-value="address"
-            v-model=lotteryRef.Operator
+            v-model=lottery.Operator
         ></v-select>
 
         <v-btn 
@@ -55,9 +55,9 @@
 </template>
 
 <script setup lang="ts">    
-    import { useDappStore } from '@/stores/useDappStore';
     import { OpenLotto, LotteryItem } from '@apuigsech/openlotto-bindings';
-    import { reactive, ref } from 'vue';
+
+    const dappStore = useDappStore();
 
     const openLottoAddress = '0x21FBd49FfdDc52AB3e088813E48B2C3BB06A4528';
     const Operators = [
@@ -71,20 +71,24 @@
         }    
     ]
 
-    const dappStore = useDappStore();
-    const blockNumber = await dappStore.provider.getBlockNumber();
+    const lottery = reactive(OpenLotto.NewEmptyLottery());
+
+    let blockNumber = 0;
+
+    onBeforeMount(async () => {
+        blockNumber = await dappStore.provider.getBlockNumber();
+    });
+
+    onMounted(async () => {
+        lottery.Name = '';
+        lottery.InitBlock = blockNumber;
+        lottery.Rounds = 0;
+        lottery.RoundBlocks = 0;
+        lottery.BetPrice = 10000000000000000;
+        lottery.PrizePoolShare[0] = BigInt('1000000000000000000');
+        lottery.Operator = '0x0000000000000000000000000000000000000000';
+    });
     
-    let lottery = OpenLotto.NewEmptyLottery();
-    lottery.Name = '';
-    lottery.InitBlock = blockNumber;
-    lottery.Rounds = 0;
-    lottery.RoundBlocks = 0;
-    lottery.BetPrice = 10000000000000000;
-    lottery.PrizePoolShare[0] = BigInt('1000000000000000000');
-    lottery.Operator = '0x0000000000000000000000000000000000000000';
-
-    const lotteryRef = reactive(lottery);
-
     const formDisabled=ref(false);
     async function createLottery() {
         formDisabled.value=true;

@@ -36,6 +36,7 @@ export const useOpenLottoStore = defineStore('openlotto', () => {
     }
 
     return {
+        lotteryMap,
         FetchLottery,
         ReadLottery,
     };

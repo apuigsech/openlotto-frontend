@@ -18,10 +18,10 @@
     
     const lottery = ref(null);
     onMounted(async () => {
-    try {
-        lottery.value = await useOpenLottoStore().ReadLottery(props.id);
-    } catch (error) {
-        console.error("Error loading lottery:", error);
-    }
-});
+        try {
+            lottery.value = await useOpenLottoStore().ReadLottery(props.id);
+        } catch (error) {
+            console.error("Error loading lottery:", error);
+        }
+    });
 </script>
