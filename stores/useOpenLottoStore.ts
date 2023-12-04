@@ -19,11 +19,34 @@ export const useOpenLottoStore = defineStore('openlotto', () => {
         return new OpenLotto(openLottoAddress, provider.value);
     });
 
-    async function FetchLottery(id: Number) {
+    async function CreateLottery(lottery: Lottery) {
+        console.log("CreateLottery", lottery);
+        let id = await openlotto.value.CreateLotteryAndWait(lottery);
+        FetchLottery(id);
+        return id;
+    }
+
+    async function FetchLottery(id: Number, force: bool = false) {
         console.log("FetchLottery", id);
-        let lottery = await openlotto.value.ReadLottery(id);
-        lotteryMap.value.set(id, lottery);
+        let lottery = lotteryMap.value.get(id);
+        if (!lottery || force) {
+            let lottery = await openlotto.value.ReadLottery(id);
+            lotteryMap.value.set(id, lottery);
+        }
         return lottery;
+    }
+
+    async function BulkFetchLottery(from_id: Number, to_id: Number, force: bool = false): Number {
+        console.log("BulkFetchLottery >>", from_id, to_id);
+        let id;
+        for (id = from_id; id < to_id; id++) {
+            try {
+                FetchLottery(id, force);
+            } catch (error) {
+                break;
+            }
+        }
+        return id;
     }
 
     async function ReadLottery(id: Number) {
@@ -37,7 +60,9 @@ export const useOpenLottoStore = defineStore('openlotto', () => {
 
     return {
         lotteryMap,
+        CreateLottery,
         FetchLottery,
+        BulkFetchLottery,
         ReadLottery,
     };
 });

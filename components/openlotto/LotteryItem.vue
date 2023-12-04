@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-    import { useOpenLottoStore } from '@/stores/useOpenLottoStore';
     const openlottoStore = useOpenLottoStore();
 
     const props = defineProps({
@@ -17,6 +16,7 @@
     });
     
     const lottery = ref(null);
+
     onMounted(async () => {
         try {
             lottery.value = await useOpenLottoStore().ReadLottery(props.id);

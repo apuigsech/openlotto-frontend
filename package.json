@@ -10,7 +10,7 @@
 		"postinstall": "nuxt prepare"
 	},
 	"dependencies": {
-		"@apuigsech/openlotto-bindings": "0.1.0-alpha-4",
+		"@apuigsech/openlotto-bindings": "0.1.0-alpha-5",
 		"@pinia-plugin-persistedstate/nuxt": "^1.1.2",
 		"@pinia/nuxt": "^0.5.0",
 		"@vue-dapp/core": "1.0.0-alpha.8",

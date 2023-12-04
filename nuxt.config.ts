@@ -60,13 +60,13 @@ export default defineNuxtConfig({
 				},
 			],
 		},
-		baseURL: "/openlotto-frontend/",
+		//baseURL: "/openlotto-frontend/",
 	},
 	build: {
 		transpile: ['vuetify'],
 	},
 	generate:{
-		nojekyll: true, //not working on this version
+		nojekyll: true,
 		fallback: '404.html',
 	},
 	target: "static",

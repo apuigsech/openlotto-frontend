@@ -1,15 +1,14 @@
 import type { Chain } from 'viem'
 import { mainnet, sepolia } from 'viem/chains'
 
-export type AppNetwork = 'mainnet' | 'sepolia'
+export type AppNetwork = 'sepolia'
 
 export const networkMap = new Map<AppNetwork, Chain>()
 
-networkMap.set('mainnet', mainnet)
+//networkMap.set('mainnet', mainnet)
 networkMap.set('sepolia', sepolia)
 sepolia.rpcUrls.default.http[0] = 'https://eth-sepolia.g.alchemy.com/v2/47VVws6UUDQb0XaCxKw1qC2boRkc-N9C';
 sepolia.rpcUrls.public.http[0] = 'https://eth-sepolia.g.alchemy.com/v2/47VVws6UUDQb0XaCxKw1qC2boRkc-N9C';
-console.log("sepolia",  sepolia)
 
 export const APP_NAME = 'OpenLotto'
 

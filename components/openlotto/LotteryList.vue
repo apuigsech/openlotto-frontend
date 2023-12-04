@@ -1,9 +1,8 @@
 <template>
-    <v-infinite-scroll :items="items" :onLoad="load">
-        <template v-for="(item, index) in items" :key="item.id">
-            <LotteryItem :id="item.id" />
-        </template>
-    </v-infinite-scroll>
+    <v-data-table 
+        :items="items" 
+        :headers="headers"
+    ></v-data-table>
 </template>
 
 <script setup>
@@ -13,20 +12,17 @@
         return { ...value, id: key };
     }));
 
-    const load = async ({ done }) => {
-        console.log("load...");
-        const batchSize = 10;
-        const lastId = Math.max(...Array.from(openlottoStore.lotteryMap.keys()), 0);
+    const headers = [
+        { text: 'Name', align: 'left', sortable: true, value: 'Name' },
+        { text: 'InitBlock', align: 'left', sortable: true, value: 'InitBlock' },
+        { text: 'Rounds', align: 'left', sortable: true, value: 'Rounds' },
+        { text: 'RoundBlocks', align: 'left', sortable: true, value: 'RoundBlocks' },
+        { text: 'BetPrice', align: 'left', sortable: true, value: 'BetPrice' },
+        { text: 'JackpotMin', align: 'left', sortable: true, value: 'JackpotMin' },
+        { text: 'Operator', align: 'left', sortable: true, value: 'Operator' },
+    ];
 
-        for (let i = 1; i <= batchSize; i++) {
-            try {
-                await openlottoStore.FetchLottery(lastId + i);
-            } catch (error) {
-                console.error("Error fetching lottery:", error);
-                break;
-            }
-        }
-
-        done('ok');
-    };
+    onMounted(async () => {
+        openlottoStore.BulkFetchLottery(1, 100);
+    });
 </script>
