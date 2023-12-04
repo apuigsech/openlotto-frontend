@@ -3,8 +3,7 @@ import { ref, computed } from 'vue';
 import { JsonRpcProvider } from 'ethers';
 import { useDappStore } from '@/stores/useDappStore';
 import { OpenLotto, LotteryItem } from '@apuigsech/openlotto-bindings';
-
-const openLottoAddress = '0x21FBd49FfdDc52AB3e088813E48B2C3BB06A4528';
+import { OpenLottoOnChain} from '@/constants';
 
 export const useOpenLottoStore = defineStore('openlotto', () => {
     const dappStore = useDappStore();
@@ -16,7 +15,12 @@ export const useOpenLottoStore = defineStore('openlotto', () => {
     });
 
     const openlotto = computed(() => {
+        const openLottoAddress = OpenLottoOnChain[dappStore.chain.network]['version']['latest']['address'];
         return new OpenLotto(openLottoAddress, provider.value);
+    });
+
+    const operators = computed(() => {
+        return OpenLottoOnChain[dappStore.chain.network]['version']['latest']['operators'];
     });
 
     async function CreateLottery(lottery: Lottery) {
@@ -37,7 +41,7 @@ export const useOpenLottoStore = defineStore('openlotto', () => {
     }
 
     async function BulkFetchLottery(from_id: Number, to_id: Number, force: bool = false): Number {
-        console.log("BulkFetchLottery >>", from_id, to_id);
+        console.log("BulkFetchLottery", from_id, to_id);
         let id;
         for (id = from_id; id < to_id; id++) {
             try {
@@ -59,6 +63,9 @@ export const useOpenLottoStore = defineStore('openlotto', () => {
     }
 
     return {
+        provider,
+        openlotto,
+        operators,
         lotteryMap,
         CreateLottery,
         FetchLottery,

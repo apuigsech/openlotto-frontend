@@ -54,29 +54,18 @@
     </v-form>
 </template>
 
-<script setup lang="ts">    
-    import { OpenLotto, LotteryItem } from '@apuigsech/openlotto-bindings';
+<script setup lang="ts">
+    import { OpenLotto } from '@apuigsech/openlotto-bindings';
 
-    const dappStore = useDappStore();
+    const openLottoStore = useOpenLottoStore();
 
-    const openLottoAddress = '0x21FBd49FfdDc52AB3e088813E48B2C3BB06A4528';
-    const Operators = [
-        { 
-            'name': 'None', 
-            'address': '0x0000000000000000000000000000000000000000'
-        },
-        { 
-            'name': 'Dummy', 
-            'address': '0x32049dCEB926f5Dbda4e4215ce603e8252C69B21'
-        }    
-    ]
+    const Operators = Object.entries(openLottoStore.operators).map(([key, value]) => ({ 'name': key, 'address': value }));
 
     const lottery = reactive(OpenLotto.NewEmptyLottery());
 
     let blockNumber = 0;
-
     onBeforeMount(async () => {
-        blockNumber = await dappStore.provider.getBlockNumber();
+        blockNumber = await openLottoStore.provider.getBlockNumber();
     });
 
     onMounted(async () => {
@@ -93,12 +82,13 @@
     async function createLottery() {
         formDisabled.value=true;
         lottery.BetPrice = BigInt(lottery.BetPrice);
-  
-        const dappStore = useDappStore();
-        const openlotto = await new OpenLotto(openLottoAddress, toRaw(dappStore.signer));
-
-        let id = await openlotto.CreateLotteryAndWait(lottery);
-        formDisabled.value=false;
-        console.log("lottery created: ", id);
+        
+        try {
+            let id = await openLottoStore.CreateLottery(lottery);
+            console.log("lottery created: ", id);
+        } catch (error) {
+            console.log(error);
+        }
+        formDisabled.value=false;   
     }
 </script>

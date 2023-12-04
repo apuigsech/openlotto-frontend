@@ -1,8 +1,14 @@
 <template>
     <v-data-table 
-        :items="items" 
-        :headers="headers"
-    ></v-data-table>
+        :items=items
+        :headers=headers
+        :loading=loading
+        hover
+    >
+        <template v-slot:item.BetPrice="{ value }">
+            {{ Number(value) / 10000000000000000 }} ETH
+        </template>
+    </v-data-table>
 </template>
 
 <script setup>
@@ -22,7 +28,10 @@
         { text: 'Operator', align: 'left', sortable: true, value: 'Operator' },
     ];
 
+    const loading = ref(true);
+
     onMounted(async () => {
-        openlottoStore.BulkFetchLottery(1, 100);
+        await openlottoStore.BulkFetchLottery(1, 100);
+        loading.value = false;
     });
 </script>
