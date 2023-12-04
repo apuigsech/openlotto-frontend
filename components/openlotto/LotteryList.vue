@@ -5,8 +5,22 @@
         :loading=loading
         hover
     >
-        <template v-slot:item.BetPrice="{ value }">
-            {{ Number(value) / 10000000000000000 }} ETH
+        <template v-slot:item.Name="{ item }">
+            <nuxt-link :to="`/lottery/${item.ID}`">
+                {{ item.Name }}
+            </nuxt-link>
+        </template>
+
+        <template v-slot:item.BetPrice="{ item }">
+            {{ Number(item.BetPrice) / 10000000000000000 }} ETH
+        </template>
+
+        <template v-slot:item.JackpotMin="{ item }">
+            {{ Number(item.JackpotMin) / 10000000000000000 }} ETH
+        </template>
+
+        <template v-slot:item.Operator="{ item }">
+            {{ openlottoStore.operators.filter(operator => operator.address === item.Operator)[0].name || 'Unknown' }}
         </template>
     </v-data-table>
 </template>
@@ -19,13 +33,13 @@
     }));
 
     const headers = [
-        { text: 'Name', align: 'left', sortable: true, value: 'Name' },
-        { text: 'InitBlock', align: 'left', sortable: true, value: 'InitBlock' },
-        { text: 'Rounds', align: 'left', sortable: true, value: 'Rounds' },
-        { text: 'RoundBlocks', align: 'left', sortable: true, value: 'RoundBlocks' },
-        { text: 'BetPrice', align: 'left', sortable: true, value: 'BetPrice' },
-        { text: 'JackpotMin', align: 'left', sortable: true, value: 'JackpotMin' },
-        { text: 'Operator', align: 'left', sortable: true, value: 'Operator' },
+        { title: 'Name', align: 'left', sortable: true, value: 'Name' },
+        { title: 'Init Block', align: 'left', sortable: true, value: 'InitBlock' },
+        { title: 'Rounds', align: 'left', sortable: true, value: 'Rounds' },
+        { title: 'Round Blocks', align: 'left', sortable: true, value: 'RoundBlocks' },
+        { title: 'BetPrice', align: 'left', sortable: true, value: 'BetPrice' },
+        { title: 'JackpotMin', align: 'left', sortable: true, value: 'JackpotMin' },
+        { title: 'Operator', align: 'left', sortable: true, value: 'Operator' },
     ];
 
     const loading = ref(true);

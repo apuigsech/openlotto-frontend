@@ -26,7 +26,7 @@ export const useDappStore = defineStore('dapp', {
 			signer: null,
 			chainId: -1,
 		},
-		network: 'mainnet',
+		network: 'sepolia',
 	}),
 	getters: {
 		chain(state): Chain {

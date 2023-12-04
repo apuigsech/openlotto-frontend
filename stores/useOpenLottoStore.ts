@@ -20,7 +20,8 @@ export const useOpenLottoStore = defineStore('openlotto', () => {
     });
 
     const operators = computed(() => {
-        return OpenLottoOnChain[dappStore.chain.network]['version']['latest']['operators'];
+        return Object.entries(OpenLottoOnChain[dappStore.chain.network]['version']['latest']['operators'])
+            .map(([key, value]) => ({ 'name': key, 'address': value }));
     });
 
     async function CreateLottery(lottery: Lottery) {
@@ -35,6 +36,7 @@ export const useOpenLottoStore = defineStore('openlotto', () => {
         let lottery = lotteryMap.value.get(id);
         if (!lottery || force) {
             let lottery = await openlotto.value.ReadLottery(id);
+            lottery.ID = id;
             lotteryMap.value.set(id, lottery);
         }
         return lottery;

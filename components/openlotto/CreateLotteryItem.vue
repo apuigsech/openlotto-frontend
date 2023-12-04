@@ -38,9 +38,20 @@
             </template>
         </v-slider>
 
+        <v-slider
+            label="Jackpot Min"
+            v-model=lottery.JackpotMin
+            min=0 max=100000000000000000000 step=1000000000000000
+            thumb-label
+        >
+            <template v-slot:thumb-label="">
+                {{ Number(lottery.JackpotMin) / 10000000000000000 }}
+            </template>
+        </v-slider>
+
         <v-select
             label="Operator"
-            :items=Operators
+            :items=openLottoStore.operators
             item-title="name"
             item-value="address"
             v-model=lottery.Operator
@@ -59,8 +70,6 @@
 
     const openLottoStore = useOpenLottoStore();
 
-    const Operators = Object.entries(openLottoStore.operators).map(([key, value]) => ({ 'name': key, 'address': value }));
-
     const lottery = reactive(OpenLotto.NewEmptyLottery());
 
     let blockNumber = 0;
@@ -74,6 +83,7 @@
         lottery.Rounds = 0;
         lottery.RoundBlocks = 0;
         lottery.BetPrice = 10000000000000000;
+        lottery.JackpotMin = 0;
         lottery.PrizePoolShare[0] = BigInt('1000000000000000000');
         lottery.Operator = '0x0000000000000000000000000000000000000000';
     });
@@ -82,6 +92,7 @@
     async function createLottery() {
         formDisabled.value=true;
         lottery.BetPrice = BigInt(lottery.BetPrice);
+        lottery.JackpotMin = BigInt(lottery.JackpotMin);
         
         try {
             let id = await openLottoStore.CreateLottery(lottery);
