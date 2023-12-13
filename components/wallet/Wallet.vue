@@ -1,8 +1,8 @@
 <template>
-    <v-btn-toggle
+    <v-btn-group
       rounded="xl"
     >
         <NetworkStatus />
         <UserStatus />
-    </v-btn-toggle>
+    </v-btn-group>
 </template>
