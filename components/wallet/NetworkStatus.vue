@@ -5,15 +5,16 @@ const dappStore = useDappStore()
 </script>
 
 <template>
-	<div class="w-[160px]">
-		<VueSelect
-			:preservable="false"
-			:clearable="false"
-			:searchable="false"
-			v-model="dappStore.network"
-			:options="networkOptions"
-		/>
-	</div>
+    <v-menu location="bottom">
+        <template v-slot:activator="{ props }">
+            <v-btn v-bind="props"> {{ dappStore.network}} </v-btn>
+        </template>
+        <v-list>
+            <v-list-item v-for="network in networkOptions">
+                <v-list-item-title>{{ network }}</v-list-item-title>
+            </v-list-item>
+        </v-list>
+    </v-menu>
 </template>
 
 <style lang="scss"></style>

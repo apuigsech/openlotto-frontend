@@ -26,38 +26,23 @@ async function onSwitchChain() {
 </script>
 
 <template>
-	<div>
-		<div v-if="isConnected" class="flex items-center flex-col">
-			<div
-				class="h-[36px] px-4 rounded-3xl sm:inline-flex items-center gap-x-2 bg-gray-100"
-				:class="isNetworkUnmatched ? 'border border-red-500' : ''"
-			>
-				<p v-if="isNetworkUnmatched" class="text-sm">Network Unmatched</p>
-				<Icon
-					name="i-ic:baseline-switch-access-shortcut"
-					v-if="isNetworkUnmatched"
-					class="clickable"
-					@click="onSwitchChain"
-				/>
+	<v-btn v-if="isConnected" @click="copy(user.address)">
+		<p v-if="isNetworkUnmatched">Network Unmatched</p>
+		<p v-else> {{ shortenAddress(user.address) }}</p>
+		<Icon
+			name="i-ic-baseline-content-copy"
+			v-if="!isNetworkUnmatched"
+		/>
+	</v-btn>
 
-				<p v-else>{{ shortenAddress(user.address) }}</p>
+	<v-btn v-if="!isConnected" @click="open()" :disabled="status === 'connecting'">
+		{{ status === 'connecting' ? 'Connecting...' : '' }}
+		<Icon name="i-octicon-plug-24" v-if="status !== 'connecting'" />     
+	</v-btn>
 
-				<Icon
-					name="i-ic-baseline-content-copy"
-					v-if="!isNetworkUnmatched"
-					class="clickable"
-					@click="copy(user.address)"
-				/>
-
-				<Icon name="i-ic:baseline-logout" class="clickable" @click="disconnect" />
-			</div>
-		</div>
-
-		<BaseButton class="rounded-3xl w-auto" v-else @click="open()" :disabled="status === 'connecting'">
-			{{ status === 'connecting' ? 'Connecting...' : '' }}
-			<Icon name="i-octicon-plug-24" v-if="status !== 'connecting'" />
-		</BaseButton>
-	</div>
+	<v-btn v-else @click="disconnect">
+		<Icon name="i-ic:baseline-logout" />
+	</v-btn>
 </template>
 
 <style lang="scss"></style>
