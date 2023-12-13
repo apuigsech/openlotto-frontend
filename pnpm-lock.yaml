@@ -8,6 +8,9 @@ dependencies:
   '@apuigsech/openlotto-bindings':
     specifier: 0.1.0-alpha-7
     version: 0.1.0-alpha-7
+  '@mdi/font':
+    specifier: ^7.3.67
+    version: 7.3.67
   '@pinia-plugin-persistedstate/nuxt':
     specifier: ^1.1.2
     version: 1.2.0(@pinia/nuxt@0.5.1)(pinia@2.1.7)
@@ -35,9 +38,6 @@ dependencies:
   ethers:
     specifier: ^6.8.0
     version: 6.9.0
-  nuxt-icon:
-    specifier: ^0.5.0
-    version: 0.5.0(vue@3.3.11)
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(vue@3.3.11)
@@ -47,9 +47,6 @@ dependencies:
   viem:
     specifier: ^1.16.5
     version: 1.19.11
-  vue3-select:
-    specifier: ^0.1.2
-    version: 0.1.2(vue@3.3.11)
   vuetify:
     specifier: 3.4.0-beta.1
     version: 3.4.0-beta.1(vue@3.3.11)
@@ -807,19 +804,6 @@ packages:
     resolution: {integrity: sha512-+KpH+QxZU7O4675t3mnkQKcZZg56u+K/Ct2K+N2AZYNVK8kyeo/bI18tI8aPm3tvNNRyTWfj6s5tnGNlcbQRsA==}
     engines: {node: '>=14'}
 
-  /@iconify/types@2.0.0:
-    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
-    dev: false
-
-  /@iconify/vue@4.1.1(vue@3.3.11):
-    resolution: {integrity: sha512-RL85Bm/DAe8y6rT6pux7D2FJSiUEM/TPfyK7GrbAOfTSwrhvwJW+S5yijdGcmtXouA8MtuH9C7l4hiSE4mLMjg==}
-    peerDependencies:
-      vue: '>=3'
-    dependencies:
-      '@iconify/types': 2.0.0
-      vue: 3.3.11
-    dev: false
-
   /@ioredis/commands@1.2.0:
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
 
@@ -914,6 +898,10 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  /@mdi/font@7.3.67:
+    resolution: {integrity: sha512-SWxvzRbUQRfewlIV+OF4/YF4DkeTjMWoT8Hh9yeU/5UBVdJZj9Uf4a9+cXjknSIhIaMxZ/4N1O/s7ojApOOGjg==}
+    dev: false
 
   /@motionone/animation@10.16.3:
     resolution: {integrity: sha512-QUGWpLbMFLhyqKlngjZhjtxM8IqiJQjLK0DF+XOF6od9nhSvlaeEpOY/UMCRVcZn/9Tr2rZO22EkuCIjYdI74g==}
@@ -5089,17 +5077,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
 
-  /nuxt-icon@0.5.0(vue@3.3.11):
-    resolution: {integrity: sha512-ND4yh8kW4VyIbORP3cWjgVrOAvy6QSDFDTJltakdqmxVfVysNIs/bx2NzlkHeR1EOS8E/jVcemfTPmRsJ7WUVw==}
-    dependencies:
-      '@iconify/vue': 4.1.1(vue@3.3.11)
-      '@nuxt/kit': 3.8.2
-    transitivePeerDependencies:
-      - rollup
-      - supports-color
-      - vue
-    dev: false
-
   /nuxt@3.8.2(sass@1.69.5)(vite@5.0.7):
     resolution: {integrity: sha512-HUAyifmqTs2zcQBGvcby3KNs2pBAk+l7ZbLjD1oCNqQQ+wBuZ1qgLC4Ebu++y4g3o3Y8WAWSvpafbKRLQZziPw==}
     engines: {node: ^14.18.0 || >=16.10.0}
@@ -7218,14 +7195,6 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.5.1
       vue: 3.3.11
-
-  /vue3-select@0.1.2(vue@3.3.11):
-    resolution: {integrity: sha512-mEIpx9CWFzynpUwDpb5YL+CfRXagiMlLscwA8i/QbMfDAwSw3MfFFU1+fInW33KpVnS/QPpxWFh7AwutaUpapw==}
-    peerDependencies:
-      vue: 3.x
-    dependencies:
-      vue: 3.3.11
-    dev: false
 
   /vue@3.3.11:
     resolution: {integrity: sha512-d4oBctG92CRO1cQfVBZp6WJAs0n8AK4Xf5fNjQCBeKCvMI1efGQ5E3Alt1slFJS9fZuPcFoiAiqFvQlv1X7t/w==}

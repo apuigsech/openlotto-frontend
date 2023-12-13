@@ -29,19 +29,17 @@ async function onSwitchChain() {
 	<v-btn v-if="isConnected" @click="copy(user.address)">
 		<p v-if="isNetworkUnmatched">Network Unmatched</p>
 		<p v-else> {{ shortenAddress(user.address) }}</p>
-		<Icon
-			name="i-ic-baseline-content-copy"
-			v-if="!isNetworkUnmatched"
-		/>
+		<v-icon icon="mdi-content-copy" v-if="!isNetworkUnmatched"></v-icon>
 	</v-btn>
 
 	<v-btn v-if="!isConnected" @click="open()" :disabled="status === 'connecting'">
 		{{ status === 'connecting' ? 'Connecting...' : '' }}
-		<Icon name="i-octicon-plug-24" v-if="status !== 'connecting'" />     
+		<v-icon icon="mdi-login" v-if="status !== 'connecting'"></v-icon>
+		<!-- <Icon name="i-octicon-plug-24" v-if="status !== 'connecting'" />      -->
 	</v-btn>
 
 	<v-btn v-else @click="disconnect">
-		<Icon name="i-ic:baseline-logout" />
+		<v-icon icon="mdi-logout"></v-icon>
 	</v-btn>
 </template>
 

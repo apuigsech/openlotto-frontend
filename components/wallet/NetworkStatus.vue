@@ -7,7 +7,7 @@ const dappStore = useDappStore()
 <template>
     <v-menu location="bottom">
         <template v-slot:activator="{ props }">
-            <v-btn v-bind="props"> {{ dappStore.network}} </v-btn>
+            <v-btn v-bind="props"> {{ dappStore.network}} <v-icon icon="mdi-chevron-down"></v-icon></v-btn>
         </template>
         <v-list>
             <v-list-item v-for="network in networkOptions">
