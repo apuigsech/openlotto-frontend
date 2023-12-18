@@ -1,8 +1,14 @@
 <script lang="ts" setup>
 import { APP_NAME } from '@/constants';
-import { networkOptions, useDappStore } from '@/stores/useDappStore';
+import { useDappStore } from '@/stores/useDappStore';
 
 const dappStore = useDappStore();
+
+dappStore.fetchBlockNumber();
+setInterval(() => {
+	dappStore.fetchBlockNumber()
+}, 5000);
+
 </script>
 
 <template>
@@ -11,6 +17,7 @@ const dappStore = useDappStore();
 		<v-app-bar-title>
 			<NuxtLink to="/">{{ APP_NAME }}</NuxtLink>
 		</v-app-bar-title>
+		#{{ dappStore.blockNumber }}
 		<v-app-bar-items>
 			<Web3Provider>
 				<Wallet />
