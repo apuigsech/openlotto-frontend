@@ -10,7 +10,7 @@ const dappStore = useDappStore()
             <v-btn v-bind="props"> {{ dappStore.network}} <v-icon icon="mdi-chevron-down"></v-icon></v-btn>
         </template>
         <v-list>
-            <v-list-item v-for="network in networkOptions">
+            <v-list-item v-for="network in networkOptions" :key="network" @click="dappStore.setNetwork(network)">
                 <v-list-item-title>{{ network }}</v-list-item-title>
             </v-list-item>
         </v-list>

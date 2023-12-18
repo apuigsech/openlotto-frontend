@@ -1,14 +1,43 @@
-import type { Chain } from 'viem'
+import { type Chain, defineChain } from 'viem'
 import { sepolia } from 'viem/chains'
 
-export type AppNetwork = 'sepolia'
+export type AppNetwork = 'sepolia' | 'development'
 export const networkMap = new Map<AppNetwork, Chain>()
 
 // TODO: Using alchemy url.
 sepolia.rpcUrls.default.http[0] = 'https://eth-sepolia.g.alchemy.com/v2/47VVws6UUDQb0XaCxKw1qC2boRkc-N9C';
 sepolia.rpcUrls.public.http[0] = 'https://eth-sepolia.g.alchemy.com/v2/47VVws6UUDQb0XaCxKw1qC2boRkc-N9C';
 
-export const OpenLottoOnChain = {
+type OpenLottoOnChainType = {
+	[key in string]: {
+    	version: {
+      		latest: {
+        		address: string;
+        		operators: {
+					[key in string]: string
+				}
+      		}
+    	}
+    	chain: Chain
+  	}
+};
+
+const development: Chain = defineChain({
+	id: 31337,
+	network: 'development',
+	name: 'Development',
+	nativeCurrency: { name: 'Dev Ether', symbol: 'DEV', decimals: 18 },
+	rpcUrls: {
+	  default: {
+			http: ['http://localhost:8545'],
+	  },
+	  public: {
+			http: ['http://localhost:8545'],
+	  }
+	}
+});
+
+export const OpenLottoOnChain: OpenLottoOnChainType = {
     'sepolia': {
         'version': {
             'latest': {
@@ -20,12 +49,26 @@ export const OpenLottoOnChain = {
             }
         },
 		'chain': sepolia
-    }
+    },
+    'development': {
+        'version': {
+            'latest': {
+                'address': '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+                'operators': {
+                    'None': '0x0000000000000000000000000000000000000000',
+                    'Dummy': '',
+                }
+            }
+        },
+		'chain':  development
+	},
 }
 
 for (const key in OpenLottoOnChain) {
-	networkMap.set(key, OpenLottoOnChain[key]['chain'])
+	networkMap.set(key as AppNetwork, OpenLottoOnChain[key as AppNetwork]['chain'])
 }
+
+export const DEFAULT_NETWORK: AppNetwork = 'sepolia'
 
 export const APP_NAME = 'OpenLotto'
 

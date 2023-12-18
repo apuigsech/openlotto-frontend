@@ -2,13 +2,15 @@ import { type Signer, JsonRpcProvider, Wallet } from 'ethers'
 import { defineStore } from 'pinia'
 import invariant from 'tiny-invariant'
 import { createPublicClient, type Chain, http, type PublicClient, type Abi, getAddress } from 'viem'
-import { HARDHAT_PRIV_KEY, MULTICALL3_ADDRESS } from '@/constants'
+import { DEFAULT_NETWORK, HARDHAT_PRIV_KEY, MULTICALL3_ADDRESS } from '@/constants'
 import { networkMap, type AppNetwork } from '@/constants'
 
 export type DappState = {
 	user: User
 	network: AppNetwork
+	blockNumber: number
 }
+
 export type User = {
 	signer: Signer | null
 	address: string
@@ -26,7 +28,8 @@ export const useDappStore = defineStore('dapp', {
 			signer: null,
 			chainId: -1,
 		},
-		network: 'sepolia',
+		network: DEFAULT_NETWORK,
+		blockNumber: 0,
 	}),
 	getters: {
 		chain(state): Chain {
@@ -84,6 +87,9 @@ export const useDappStore = defineStore('dapp', {
 			this.user.signer = null
 			this.user.chainId = -1
 		},
+		setNetwork(network: AppNetwork) {
+			this.network = network;
+		},
 		multicall(functionNames: string[], address: string, abi: any) {
 			return this.client.multicall({
 				contracts: functionNames.map(functionName => {
@@ -95,6 +101,11 @@ export const useDappStore = defineStore('dapp', {
 				}),
 				multicallAddress: getAddress(this.multicallAddress),
 			})
+		},
+		async fetchBlockNumber() {
+			const num = await this.provider.getBlockNumber()
+			this.blockNumber = num
+			return num
 		},
 	},
 	persist: {
