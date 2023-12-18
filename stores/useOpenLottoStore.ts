@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { JsonRpcProvider } from 'ethers';
 import { useDappStore } from '@/stores/useDappStore';
-import { OpenLotto, LotteryItem } from '@apuigsech/openlotto-bindings';
+import { OpenLotto, Lottery } from '@apuigsech/openlotto-bindings';
 import { OpenLottoOnChain} from '@/constants';
 
 export const useOpenLottoStore = defineStore('openlotto', () => {
     const dappStore = useDappStore();
 
-    const lotteryMap = ref(new Map<Number, LotteryItem>());
+    const lotteryMap = ref(new Map<Number, Lottery>());
 
     const provider = computed(() => {
         return dappStore.isConnected ? dappStore.signer : dappStore.provider;
