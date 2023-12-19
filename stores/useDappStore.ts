@@ -5,10 +5,13 @@ import { createPublicClient, type Chain, http, type PublicClient, type Abi, getA
 import { DEFAULT_NETWORK, HARDHAT_PRIV_KEY, MULTICALL3_ADDRESS } from '@/constants'
 import { networkMap, type AppNetwork } from '@/constants'
 
+type IntervalID = number | NodeJS.Timeout;
+
 export type DappState = {
 	user: User
 	network: AppNetwork
 	blockNumber: number
+	syncInterval: IntervalID | null
 }
 
 export type User = {
@@ -30,6 +33,7 @@ export const useDappStore = defineStore('dapp', {
 		},
 		network: DEFAULT_NETWORK,
 		blockNumber: 0,
+		syncInterval: null,
 	}),
 	getters: {
 		chain(state): Chain {
@@ -106,6 +110,20 @@ export const useDappStore = defineStore('dapp', {
 			const num = await this.provider.getBlockNumber()
 			this.blockNumber = num
 			return num
+		},
+		async syncBlockNumber(time: number) {
+			if (!this.syncInterval) {
+				await this.fetchBlockNumber();
+				this.syncInterval = setInterval(() => {
+					this.fetchBlockNumber();
+				}, time);
+			}
+		},
+		async unsyncBlockNumber() {
+			if (this.syncInterval) {
+				clearInterval(this.syncInterval)
+				this.syncInterval = null
+			}
 		},
 	},
 	persist: {
