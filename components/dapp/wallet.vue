@@ -2,6 +2,7 @@
 	const { chain, chains } = useNetwork()
 	const { address, isConnected } = useAccount()
 	const { disconnect } = useDisconnect()
+	const { switchNetwork } = useSwitchNetwork()
 
 	import { useClipboard } from '@vueuse/core'
 	const { copy } = useClipboard();
@@ -18,7 +19,7 @@
 				<v-btn v-bind="props"> {{ chain && chain.name }} <v-icon icon="mdi-chevron-down"></v-icon></v-btn>
 			</template>
 			<v-list>
-				<v-list-item v-for="chain in chains" :key="chain.id">
+				<v-list-item v-for="chain in chains" :key="chain.id" @click="switchNetwork(chain.id)">
 					<v-list-item-title>{{ chain.name }}</v-list-item-title>
 				</v-list-item>
 			</v-list>
