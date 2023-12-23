@@ -18,6 +18,7 @@ export default defineNuxtConfig({
 		],
 		'@pinia-plugin-persistedstate/nuxt',
 		'@vueuse/nuxt',
+		'@use-wagmi/nuxt',
 	],
 	imports: {
 		dirs: ['store'],
