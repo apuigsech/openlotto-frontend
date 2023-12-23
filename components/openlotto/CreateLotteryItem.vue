@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="createLottery" :disabled=formDisabled>
+    <v-form v-if=isConnected @submit.prevent="createLottery" >
         <v-text-field 
             variant="underlined"
             label="Name"
@@ -8,11 +8,11 @@
 
         <v-slider
             label="Init Block"
-            v-model=lottery.InitBlock
-            :min=blockNumber :max="blockNumber + 10000" step=1
+            v-model=initBlock
+            :min=Number(blockNumber.data.value) :max="Number(blockNumber.data.value) + 1000" step=1
             thumb-label
         ></v-slider>
-
+        
         <v-slider
             label="Rounds"
             v-model=lottery.Rounds
@@ -29,33 +29,33 @@
 
         <v-slider
             label="Bet Price"
-            v-model=lottery.BetPrice
-            min=0 max=1000000000000000000 step=100000000000000
+            v-model=betPrice
+            min=1 :max=100 :step=0.01
             thumb-label
         >
             <template v-slot:thumb-label="">
-                {{ Number(lottery.BetPrice) / 10000000000000000 }}
+                {{ betPrice }} {{ chain.nativeCurrency.symbol }}
             </template>
         </v-slider>
 
         <v-slider
             label="Jackpot Min"
-            v-model=lottery.JackpotMin
-            min=0 max=100000000000000000000 step=1000000000000000
+            v-model=jackpotMin
+            min=0 :max=1000 :step=0.1
             thumb-label
         >
             <template v-slot:thumb-label="">
-                {{ Number(lottery.JackpotMin) / 10000000000000000 }}
+                {{ jackpotMin }} {{ chain.nativeCurrency.symbol }}
             </template>
         </v-slider>
 
-        <v-select
+        <!-- <v-select
             label="Operator"
             :items=openLottoStore.operators
             item-title="name"
             item-value="address"
             v-model=lottery.Operator
-        ></v-select>
+        ></v-select>  -->
 
         <v-btn 
             variant="tonal"
@@ -66,40 +66,60 @@
 </template>
 
 <script setup lang="ts">
-    import { OpenLotto } from '@apuigsech/openlotto-bindings';
+	const { isConnected } = useAccount();
+	const { chain } = useNetwork();
+    const openlotto = useOpenLotto();
+    const blockNumber = useBlockNumber();
 
-    const openLottoStore = useOpenLottoStore();
-
-    const lottery = reactive(OpenLotto.NewEmptyLottery());
-
-    let blockNumber = 0;
-    onBeforeMount(async () => {
-        blockNumber = await openLottoStore.provider.getBlockNumber();
+    const lottery = ref({
+        Name: '',
+        InitBlock: BigInt(0),
+        Rounds: 1,
+        RoundBlocks: 1,
+        BetPrice: BigInt(0),
+        JackpotMin: BigInt(0),
+        DistributionPoolTo: [
+            '0x0000000000000000000000000000000000000000',
+            '0x0000000000000000000000000000000000000000',
+            '0x0000000000000000000000000000000000000000',
+            '0x0000000000000000000000000000000000000000',
+            '0x0000000000000000000000000000000000000000'
+        ],
+        DistributionPoolShare: [ BigInt(0), BigInt(0), BigInt(0), BigInt(0), BigInt(0) ],
+        PrizePoolShare: [
+            BigInt(0), BigInt(0), BigInt(0), BigInt(0), BigInt(0),
+            BigInt(0), BigInt(0), BigInt(0), BigInt(0), BigInt(0),
+            BigInt(0), BigInt(0), BigInt(0), BigInt(0), BigInt(0),
+            BigInt(0), BigInt(0), BigInt(0), BigInt(0), BigInt(0) 
+        ],
+        PrizePoolAttributes: [
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000',
+            '0x0000000000000000', '0x0000000000000000'
+        ],
+        Operator: '0x0000000000000000000000000000000000000000',
+        Attributes: '0x00000000000000000000000000000000'
     });
 
-    onMounted(async () => {
-        lottery.Name = '';
-        lottery.InitBlock = blockNumber;
-        lottery.Rounds = 0;
-        lottery.RoundBlocks = 0;
-        lottery.BetPrice = 10000000000000000;
-        lottery.JackpotMin = 0;
-        lottery.PrizePoolShare[0] = BigInt('1000000000000000000');
-        lottery.Operator = '0x0000000000000000000000000000000000000000';
-    });
-    
-    const formDisabled=ref(false);
+    const initBlock = ref(0);
+    const betPrice = ref(0);
+    const jackpotMin = ref(0);
+
     async function createLottery() {
-        formDisabled.value=true;
-        lottery.BetPrice = BigInt(lottery.BetPrice);
-        lottery.JackpotMin = BigInt(lottery.JackpotMin);
+        lottery.value.InitBlock = BigInt(initBlock.value);
+        lottery.value.BetPrice = BigInt(betPrice.value * 10**chain?.value.nativeCurrency.decimals);
+        lottery.value.JackpotMin = BigInt(jackpotMin.value * 10**chain?.value.nativeCurrency.decimals);
+
+        lottery.value.PrizePoolShare[0] = BigInt('1000000000000000000');
+        lottery.value.Operator = '0x32049dCEB926f5Dbda4e4215ce603e8252C69B21';
         
-        try {
-            let id = await openLottoStore.CreateLottery(lottery);
-            console.log("lottery created: ", id);
-        } catch (error) {
-            console.log(error);
-        }
-        formDisabled.value=false;   
+        openlotto.CreateLottery(lottery.value);
     }
 </script>
