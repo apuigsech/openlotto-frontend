@@ -1,12 +1,7 @@
 <script lang="ts" setup>
-	const blockNumber = ref(0);
-
-    useBlockNumber({
-        watch: true,
-		onBlock(n) {
-			blockNumber.value = Number(n);
-		}
-    })
+    const blockNumber = useBlockNumber({
+        // watch: true,
+    });	
 </script>
 
 <template>
@@ -15,7 +10,7 @@
 			<v-app-bar-title>
 				<NuxtLink to="/">OpenLotto</NuxtLink>
 			</v-app-bar-title>
-			#{{ blockNumber }}
+			#{{ blockNumber.data.value }}
             <wallet />
 		</v-app-bar>
 		<v-main>
