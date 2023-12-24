@@ -1,8 +1,10 @@
 <template>
-    <v-data-table 
-        :items=items
-        :headers=headers
+    <v-data-table-server 
         :loading=loading
+        :headers=headers
+        :items=items
+        items-length=100
+        @update:options=loadItems
         hover
     >
         <template v-slot:item.Name="{ item }">
@@ -19,18 +21,15 @@
             {{ Number(item.JackpotMin) / 10000000000000000 }} ETH
         </template>
 
-        <template v-slot:item.Operator="{ item }">
+        <!-- TODO 
+            <template v-slot:item.Operator="{ item }">
             {{ openlottoStore.operators.filter(operator => operator.address === item.Operator)[0].name || 'Unknown' }}
-        </template>
-    </v-data-table>
+        </template> -->
+    </v-data-table-server>
 </template>
 
 <script setup>
-    const openlottoStore = useOpenLottoStore();
-
-    const items = computed(() => Array.from(openlottoStore.lotteryMap.entries()).map(([key, value]) => {
-        return { ...value, id: key };
-    }));
+    const openlotto = useOpenLotto();
 
     const headers = [
         { title: 'Name', align: 'left', sortable: true, value: 'Name' },
@@ -41,11 +40,24 @@
         { title: 'JackpotMin', align: 'left', sortable: true, value: 'JackpotMin' },
         { title: 'Operator', align: 'left', sortable: true, value: 'Operator' },
     ];
+    const items = ref([]);
 
-    const loading = ref(true);
+    const loading = ref(false);
 
-    onMounted(async () => {
-        await openlottoStore.BulkFetchLottery(1, 100);
+    function loadItems({ page, itemsPerPage, sortBy }) {
+        loading.value = true;
+        items.value = [];
+
+        const id_init = 1 + (page - 1) * itemsPerPage;
+        const id_fini = 1 + page * itemsPerPage;
+    
+        for (let id = id_init; id < id_fini; id++) {
+            openlotto.ReadLottery(id).then((lottery) => {
+                lottery.ID = id;
+                items.value.push(lottery);
+            });
+        }
+
         loading.value = false;
-    });
+    }
 </script>

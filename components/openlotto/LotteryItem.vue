@@ -1,15 +1,13 @@
 <template>
-    <v-card v-if=lottery :title=lottery.Name>
-        <v-card-text>
-            <p><b>InitBlock:</b> {{ lottery.InitBlock }}</p>
-            <p><b>Rounds:</b> {{ lottery.Rounds }}</p>
-            <p><b>RoundBlocks:</b> {{ lottery.RoundBlocks }}</p>
-        </v-card-text>
-    </v-card>
+    <div v-if="lottery">
+        <p><b>InitBlock:</b> {{ lottery.InitBlock }}</p>
+        <p><b>Rounds:</b> {{ lottery.Rounds }}</p>
+        <p><b>RoundBlocks:</b> {{ lottery.RoundBlocks }}</p>
+    </div>
 </template>
 
 <script setup>
-    const openlottoStore = useOpenLottoStore();
+    const openlotto = useOpenLotto();
 
     const props = defineProps({
         id: Number,
@@ -19,7 +17,7 @@
 
     onMounted(async () => {
         try {
-            lottery.value = await useOpenLottoStore().ReadLottery(props.id);
+            lottery.value = await openlotto.ReadLottery(props.id);
         } catch (error) {
             console.error("Error loading lottery:", error);
         }
