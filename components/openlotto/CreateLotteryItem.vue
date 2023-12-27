@@ -66,8 +66,7 @@
 </template>
 
 <script setup lang="ts">
-	const { isConnected } = useAccount();
-	const { chain } = useNetwork();
+	const { isConnected, chain } = useAccount();
     const openlotto = useOpenLotto();
     const blockNumber = useBlockNumber();
 
