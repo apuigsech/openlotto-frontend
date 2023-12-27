@@ -1,11 +1,7 @@
 <script setup lang="ts">
-    import { watchNetwork } from '@wagmi/core'
+    import { watchConnections } from '@wagmi/core'
 
-    const unwatch = watchNetwork((network) => {
-        if (network.chain) {
-            closeBoard();
-        }
-    })
+    const config = useConfig()
 
     const showBoard = ref(false);
 
@@ -16,16 +12,32 @@
         showBoard.value = false;
     }
 
+    let unwatch;
+
+    onMounted(async () => {
+        unwatch = watchConnections(config, {
+            onChange(data) { 
+                closeBoard();
+            },
+        })
+    });
+
+    onUnmounted(() => {
+        if (unwatch) {
+            unwatch();
+        }
+    });
+
     provide('showBoard', showBoard);
     provide('openBoard', openBoard);
     provide('closeBoard', closeBoard);
 </script>
 
 <template>
-    <v-app>
+    <div>
         <slot />
         <board />
-    </v-app>
+    </div>
 </template>
 
 <style lang="scss"></style>

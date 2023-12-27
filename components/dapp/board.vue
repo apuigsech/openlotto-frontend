@@ -1,6 +1,6 @@
 <script setup lang="ts">
+	const config = useConfig()
 	const { connect, connectors } = useConnect()
-    const { isConnected } = useAccount()
 
     const showBoard = inject('showBoard');
 	const closeBoard = inject('closeBoard');
@@ -11,11 +11,10 @@
     	<v-card>
             <v-btn 
                 v-for="connector in connectors"
-                :disabled=!connector.ready
-                @click="connect({connector})"
+                @click="connect({connector, chainId: config.state.chainId })"
                 class="connector"
             >
-                <connector-logo :connector=connector />{{ connector.name }}
+                <img :src=connector.icon /> {{ connector.name }}
             </v-btn>
     	</v-card>
 	</v-dialog>

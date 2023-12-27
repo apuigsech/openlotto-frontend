@@ -11,15 +11,18 @@
 	},
 	"dependencies": {
 		"@apuigsech/openlotto-bindings": "0.1.0-alpha-7",
+		"@hebilicious/vue-query-nuxt": "^0.3.0",
+		"@tanstack/vue-query": "^5.15.0",
 		"@mdi/font": "^7.3.67",
 		"@pinia-plugin-persistedstate/nuxt": "^1.2.0",
 		"@pinia/nuxt": "^0.5.1",
-		"@use-wagmi/nuxt": "^1.1.8",
+		"@wagmi/connectors": "4.0.0-rc.1",
+		"@wagmi/core": "2.0.0-rc.1",
 		"@vueuse/core": "^10.7.0",
 		"@vueuse/nuxt": "^10.7.0",
 		"copy-to-clipboard": "^3.3.3",
-		"use-wagmi": "^0.4.9",
-		"vuetify": "3.4.8"
+		"vuetify": "3.4.8",
+		"viem": "2.0.0-rc.2"
 	},
 	"devDependencies": {
 		"@nuxt/devtools": "latest",
