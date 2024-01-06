@@ -1,40 +1,18 @@
-import { UseWagmiPlugin, configureChains, createConfig } from 'use-wagmi'
-import { localhost, sepolia } from 'use-wagmi/chains'
+import { UseWagmiPlugin } from 'use-wagmi'
 
-import { MetaMaskConnector } from 'use-wagmi/connectors/metaMask'
-import { CoinbaseWalletConnector } from 'use-wagmi/connectors/coinbaseWallet'
+import { http, createConfig } from '@wagmi/core'
+import { localhost, sepolia } from '@wagmi/core/chains'
 
-import { alchemyProvider } from 'use-wagmi/providers/alchemy'
-import { publicProvider } from 'use-wagmi/providers/public'
+const config = createConfig({
+  chains: [localhost, sepolia],
+  connectors: [
+  ],
+  transports: {
+    [localhost.id]: http(),
+    [sepolia.id]: http(),
+  },
+})
 
 export default defineNuxtPlugin((nuxtApp) => {
-    const { chains, publicClient, webSocketPublicClient } = configureChains(
-        [sepolia, localhost],
-        [
-            //alchemyProvider({ apiKey: '47VVws6UUDQb0XaCxKw1qC2boRkc' }),
-            publicProvider(),
-        ],
-    )
-
-    const config = createConfig({
-        autoConnect: true,
-        connectors: [
-            new MetaMaskConnector({
-                chains,
-                options: {
-                    UNSTABLE_shimOnConnectSelectAccount: true,
-                },
-            }),
-            new CoinbaseWalletConnector({
-                chains,
-                options: {
-                    appName: '',
-                },
-            }),
-        ],
-        publicClient,
-        webSocketPublicClient,
-    })
-
-    nuxtApp.vueApp.use(UseWagmiPlugin, config)
+  nuxtApp.vueApp.use(UseWagmiPlugin, {config});
 })
